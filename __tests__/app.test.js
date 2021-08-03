@@ -10,21 +10,25 @@ import dogs_model from '../models/dogs-model.js';
 // U - update  PUT    --> UPDATE
 // D - delete  DELETE --> DELETE
 
-
 describe('dog routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
 
   it('inserts dog into dogs table', async () => {
-    const parker = { name: 'Parker', breed: 'Blue Healer', age: 3, is_reactive: true };
+    const parker = {
+      name: 'Parker',
+      breed: 'Blue Healer',
+      age: 3,
+      is_reactive: true,
+    };
     const res = await request(app).post('/api/v1/doggos').send(parker);
 
     expect(res.body).toEqual({
       id: '1',
       ...parker,
-    })
-  })
+    });
+  });
 
   it('gets a doggo by id', async () => {
     const dog = await dogs_model.insert({
@@ -35,9 +39,9 @@ describe('dog routes', () => {
     });
 
     const res = await request(app).get(`/api/v1/doggos/${dog.id}`);
-    
+
     expect(res.body).toEqual(dog);
-  })
+  });
 
   it('gets all the doggos', async () => {
     const parker = await dogs_model.insert({
@@ -45,29 +49,28 @@ describe('dog routes', () => {
       breed: 'Blue Healer',
       age: 3,
       is_reactive: true,
-    })
+    });
 
     const tina = await dogs_model.insert({
       name: 'Tina',
       breed: 'Mixed Terrier',
       age: 12,
       is_reactive: false,
-    })
+    });
 
     const matilda = await dogs_model.insert({
       name: 'Matilda',
       breed: 'Boston Terrier',
       age: 6,
       is_reactive: true,
-    })
+    });
 
     return request(app)
       .get('/api/v1/doggos')
       .then((res) => {
-        expect(res.body).toEqual([ parker, tina, matilda ]);
-      })
-
-  })
+        expect(res.body).toEqual([parker, tina, matilda]);
+      });
+  });
 
   it('updates a dog by ID', async () => {
     const dog = await dogs_model.insert({
@@ -75,29 +78,27 @@ describe('dog routes', () => {
       breed: 'Blue Healer',
       age: 3,
       is_reactive: true,
-    })
+    });
 
     const res = await request(app)
       .put(`/api/v1/doggos/${dog.id}`)
-      .send({ is_reactive: false })
+      .send({ is_reactive: false });
 
-      expect(res.body).toEqual({...dog, is_reactive: false })
-  })
+    expect(res.body).toEqual({ ...dog, is_reactive: false });
+  });
 
   it('deletes a dog by id', async () => {
-      const dog = await dogs_model.insert({
-        name: 'Parker',
-        breed: 'Blue Healer',
-        age: 3,
-        is_reactive: true,
-      });
+    const dog = await dogs_model.insert({
+      name: 'Parker',
+      breed: 'Blue Healer',
+      age: 3,
+      is_reactive: true,
+    });
 
-      const res = await request(app).delete(`/api/v1/doggos/${dog.id}`);
+    const res = await request(app).delete(`/api/v1/doggos/${dog.id}`);
 
-      expect(res.body).toEqual({
-        message: `${dog.name} of breed type ${dog.breed} has been removed.`
-      });
-  })
-
-
+    expect(res.body).toEqual({
+      message: `${dog.name} of breed type ${dog.breed} has been removed.`,
+    });
+  });
 }); // <--- END OF PARENT CODE BLOCK
