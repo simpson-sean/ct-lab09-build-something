@@ -25,3 +25,14 @@ export default Router()
              next(err);
         }
     })
+
+    .get('/', async (req, res, next) => {
+        try {
+            const allDoggos = await dogs_model.getAllDoggos();
+
+            res.send(allDoggos);
+
+        } catch(err) {
+            next(err)
+        }
+    })

@@ -29,4 +29,10 @@ export default class dogs_model {
 
         return new dogs_model(rows[0]);
     }
+
+    static async getAllDoggos() {
+        const { rows } = await pool.query('SELECT * FROM dogs');
+
+        return rows.map((row) => new dogs_model(row));
+    }
 }

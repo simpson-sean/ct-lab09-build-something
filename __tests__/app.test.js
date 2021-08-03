@@ -4,6 +4,12 @@ import request from 'supertest';
 import app from '../lib/app.js';
 import dogs_model from '../models/dogs-model.js';
 
+// CRUD
+// C - create  POST   --> INSERT
+// R - read    GET    --> SELECT
+// U - update  PUT    --> UPDATE
+// D - delete  DELETE --> DELETE
+
 
 describe('dog routes', () => {
   beforeEach(() => {
@@ -31,6 +37,36 @@ describe('dog routes', () => {
     const res = await request(app).get(`/api/v1/doggos/${dog.id}`);
     
     expect(res.body).toEqual(dog);
+  })
+
+  it('gets all the doggos', async () => {
+    const parker = await dogs_model.insert({
+      name: 'Parker',
+      breed: 'Blue Healer',
+      age: 3,
+      is_reactive: true,
+    })
+
+    const tina = await dogs_model.insert({
+      name: 'Tina',
+      breed: 'Mixed Terrier',
+      age: 12,
+      is_reactive: false,
+    })
+
+    const matilda = await dogs_model.insert({
+      name: 'Matilda',
+      breed: 'Boston Terrier',
+      age: 6,
+      is_reactive: true,
+    })
+
+    return request(app)
+      .get('/api/v1/doggos')
+      .then((res) => {
+        expect(res.body).toEqual([ parker, tina, matilda ]);
+      })
+
   })
 
 
