@@ -50,3 +50,16 @@ export default Router()
             next(err);
         }
     })
+
+    .delete('/:id', async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const dog = await dogs_model.deleteDogById(id);
+
+            res.send({
+                message: `${dog.name} of breed type ${dog.breed} has been removed.`
+            });
+        } catch(err) {
+            next(err);
+        }
+    })

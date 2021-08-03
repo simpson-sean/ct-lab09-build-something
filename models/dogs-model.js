@@ -50,4 +50,12 @@ export default class dogs_model {
 
         return new dogs_model(rows[0]);
     }
+
+    static async deleteDogById(id) {
+        const { rows } = await pool.query(
+            'DELETE FROM dogs WHERE id=$1 RETURNING *', [id]
+        );
+
+        return new dogs_model(rows[0]);
+    }
 }

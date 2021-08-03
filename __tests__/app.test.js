@@ -84,5 +84,20 @@ describe('dog routes', () => {
       expect(res.body).toEqual({...dog, is_reactive: false })
   })
 
+  it('deletes a dog by id', async () => {
+      const dog = await dogs_model.insert({
+        name: 'Parker',
+        breed: 'Blue Healer',
+        age: 3,
+        is_reactive: true,
+      });
+
+      const res = await request(app).delete(`/api/v1/doggos/${dog.id}`);
+
+      expect(res.body).toEqual({
+        message: `${dog.name} of breed type ${dog.breed} has been removed.`
+      });
+  })
+
 
 }); // <--- END OF PARENT CODE BLOCK
