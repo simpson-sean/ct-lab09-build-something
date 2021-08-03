@@ -36,3 +36,17 @@ export default Router()
             next(err)
         }
     })
+
+    .put('/:id', async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const { name, breed, age, is_reactive } = req.body;
+
+            const updatedDoggo = await dogs_model.updateDoggoById(id, {name, breed, age, is_reactive});
+
+            res.send(updatedDoggo);
+
+        } catch(err) {
+            next(err);
+        }
+    })

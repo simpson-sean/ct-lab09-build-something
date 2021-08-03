@@ -69,5 +69,20 @@ describe('dog routes', () => {
 
   })
 
+  it('updates a dog by ID', async () => {
+    const dog = await dogs_model.insert({
+      name: 'Parker',
+      breed: 'Blue Healer',
+      age: 3,
+      is_reactive: true,
+    })
+
+    const res = await request(app)
+      .put(`/api/v1/doggos/${dog.id}`)
+      .send({ is_reactive: false })
+
+      expect(res.body).toEqual({...dog, is_reactive: false })
+  })
+
 
 }); // <--- END OF PARENT CODE BLOCK
