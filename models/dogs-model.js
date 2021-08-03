@@ -23,4 +23,10 @@ export default class dogs_model {
 
     return new dogs_model(rows[0]);
     }
+
+    static async getDogById(id) {
+        const { rows } = await pool.query('SELECT * FROM dogs WHERE id=$1', [id]);
+
+        return new dogs_model(rows[0]);
+    }
 }

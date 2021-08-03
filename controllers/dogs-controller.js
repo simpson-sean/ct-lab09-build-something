@@ -13,3 +13,15 @@ export default Router()
             next(err);
         }
     })
+
+    .get('/:id', async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const parker = await dogs_model.getDogById(id);
+
+            res.send(parker);
+
+        }   catch(err) {
+             next(err);
+        }
+    })
